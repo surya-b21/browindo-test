@@ -6,13 +6,13 @@ abstract class AuthEvent {}
 class AppStart extends AuthEvent {}
 
 class LoggedIn extends AuthEvent {
-  final String user_id;
+  final String userId;
   final String password;
 
-  LoggedIn({required this.user_id, required this.password});
+  LoggedIn({required this.userId, required this.password});
 
   @override
-  String toString() => 'LoggedIn { user_id: $user_id, password: $password }';
+  String toString() => 'LoggedIn { user_id: $userId, password: $password }';
 }
 
 class Logout extends AuthEvent {}

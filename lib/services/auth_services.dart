@@ -6,15 +6,15 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:test_flreelance/helper/dio_helper.dart';
 
 class UserServices {
-  final _storage = FlutterSecureStorage();
+  final _storage = const FlutterSecureStorage();
   final _http = DioHelper().initDio();
 
-  Future<String> login(String user_id, String password) async {
+  Future<String> login(String userId, String password) async {
     var bytes = utf8.encode(password);
     var hashed = sha256.convert(bytes);
     final resp = await _http.post("/login",
         data: json.encode(
-          {"user_id": user_id, "user_password": hashed},
+          {"user_id": userId, "user_password": hashed.toString()},
         ),
         options: Options(responseType: ResponseType.json));
 

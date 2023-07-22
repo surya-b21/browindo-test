@@ -5,7 +5,7 @@ import 'package:test_flreelance/model/branch.dart';
 
 class ReferencesServices {
   final _http = DioHelper().initDio();
-  final _storage = FlutterSecureStorage();
+  final _storage = const FlutterSecureStorage();
 
   Future<List<Map<String, dynamic>>> getDepartementList() async {
     String? token = await _storage.read(key: 'token');
