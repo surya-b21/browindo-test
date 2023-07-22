@@ -24,4 +24,18 @@ class EmployeeCubit extends Cubit<EmployeeState> {
       throw Exception(e);
     }
   }
+
+  Future<String> addEmployee(Employee employee) async {
+    try {
+      String message = await _employee.addEmployee(employee);
+
+      if (message == "Tambah karyawan berhasil") {
+        return message;
+      } else {
+        return "Gagal";
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 }

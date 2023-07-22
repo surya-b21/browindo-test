@@ -56,7 +56,7 @@ class _ListEmployeeState extends State<ListEmployee> {
       body: Center(
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Row(
@@ -91,7 +91,7 @@ class _ListEmployeeState extends State<ListEmployee> {
                                         value: e.branchId,
                                         child: Text(
                                           e.branchName,
-                                          style: TextStyle(fontSize: 13),
+                                          style: const TextStyle(fontSize: 13),
                                         ),
                                       ))
                                   .toList(),
@@ -100,7 +100,7 @@ class _ListEmployeeState extends State<ListEmployee> {
                         ),
                       );
                     } else {
-                      return Center(child: const CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     }
                   },
                 ),
@@ -139,7 +139,7 @@ class _ListEmployeeState extends State<ListEmployee> {
                         ),
                       );
                     } else {
-                      return Center(child: const CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     }
                   },
                 ),
@@ -152,7 +152,7 @@ class _ListEmployeeState extends State<ListEmployee> {
                       context.read<EmployeeCubit>().getListEmployee(
                           branch: branch, departement: departement);
                     },
-                    child: Text(
+                    child: const Text(
                       "Cari",
                       style: TextStyle(color: Colors.black),
                     ),
@@ -160,7 +160,7 @@ class _ListEmployeeState extends State<ListEmployee> {
                 )
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             BlocBuilder<EmployeeCubit, EmployeeState>(
@@ -176,7 +176,7 @@ class _ListEmployeeState extends State<ListEmployee> {
                           onTap: () => showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
-                              title: Text("Detail Info"),
+                              title: const Text("Detail Info"),
                               content: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.min,
@@ -208,7 +208,7 @@ class _ListEmployeeState extends State<ListEmployee> {
                     ),
                   );
                 } else {
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(),
                   );
                 }
@@ -218,13 +218,27 @@ class _ListEmployeeState extends State<ListEmployee> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
+        onPressed: () async {
+          await Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => FormEmployee(title: "Tambah Employee"),
+              builder: (context) => MultiBlocProvider(providers: [
+                BlocProvider<DepartementCubit>(
+                  create: (context) => DepartementCubit(),
+                ),
+                BlocProvider<BranchCubit>(
+                  create: (context) => BranchCubit(),
+                ),
+                BlocProvider<EmployeeCubit>(
+                  create: (context) => EmployeeCubit(),
+                )
+              ], child: const FormEmployee(title: "Tambah Employee")),
             ),
           );
+
+          setState(() {
+            callEmployee();
+          });
         },
         tooltip: 'Tambah Employee',
         backgroundColor: Colors.blue.shade300,
