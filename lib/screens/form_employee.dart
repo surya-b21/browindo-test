@@ -13,7 +13,9 @@ class _FormEmployeeState extends State<FormEmployee> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.blue.shade300,
         title: Text(widget.title),
+        centerTitle: true,
       ),
     );
   }

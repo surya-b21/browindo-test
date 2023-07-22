@@ -9,14 +9,13 @@ class EmployeeServices {
   final _http = DioHelper().initDio();
   final _storage = const FlutterSecureStorage();
 
-  Future<List<Employee>> getListEmployee(
-      String branch, String departement) async {
+  Future<List<Employee>> getListEmployee(String branch, int departement) async {
     String url = "/employee/list?";
-    if (branch.isNotEmpty) {
+    if (branch != "") {
       url = "${url}branch_id=$branch&";
     }
 
-    if (departement.isNotEmpty) {
+    if (departement != 0) {
       url = "${url}departement=$departement";
     }
 

@@ -3,6 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_flreelance/bloc/auth/auth_bloc.dart';
+import 'package:test_flreelance/cubit/branch/branch_cubit.dart';
+import 'package:test_flreelance/cubit/departement/departement_cubit.dart';
+import 'package:test_flreelance/cubit/employee/employee_cubit.dart';
 import 'package:test_flreelance/screens/list_employee.dart';
 import 'package:test_flreelance/screens/login.dart';
 
@@ -66,11 +69,24 @@ class MyApp extends StatelessWidget {
         home: BlocBuilder<AuthBloc, AuthState>(
           builder: (context, state) {
             if (state is AuthAuthenticated) {
-              return ListEmployee();
+              return MultiBlocProvider(
+                providers: [
+                  BlocProvider<EmployeeCubit>(
+                    create: (context) => EmployeeCubit(),
+                  ),
+                  BlocProvider<DepartementCubit>(
+                    create: (context) => DepartementCubit(),
+                  ),
+                  BlocProvider<BranchCubit>(
+                    create: (context) => BranchCubit(),
+                  )
+                ],
+                child: const ListEmployee(),
+              );
             } else if (state is AuthUnauthenticated) {
-              return Login();
+              return const Login();
             } else {
-              return Scaffold(
+              return const Scaffold(
                 body: Center(
                   child: CircularProgressIndicator(),
                 ),
