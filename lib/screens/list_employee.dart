@@ -6,7 +6,8 @@ import 'package:test_flreelance/bloc/auth/auth_bloc.dart';
 import 'package:test_flreelance/cubit/branch/branch_cubit.dart';
 import 'package:test_flreelance/cubit/departement/departement_cubit.dart';
 import 'package:test_flreelance/cubit/employee/employee_cubit.dart';
-import 'package:test_flreelance/screens/form_employee.dart';
+import 'package:test_flreelance/screens/add_employee.dart';
+import 'package:test_flreelance/screens/edit_employee.dart';
 
 class ListEmployee extends StatefulWidget {
   const ListEmployee({super.key});
@@ -16,8 +17,8 @@ class ListEmployee extends StatefulWidget {
 }
 
 class _ListEmployeeState extends State<ListEmployee> {
-  int departement = 0;
-  String branch = "";
+  String branch = "001";
+  int department = 1;
   @override
   void initState() {
     callBranch();
@@ -124,7 +125,7 @@ class _ListEmployeeState extends State<ListEmployee> {
                                 child: DropdownButton(
                               value: state.data.first.departmentId,
                               onChanged: (int? value) {
-                                departement = value!;
+                                department = value!;
                               },
                               items: state.data
                                   .map((e) => DropdownMenuItem(
@@ -150,7 +151,7 @@ class _ListEmployeeState extends State<ListEmployee> {
                         backgroundColor: Colors.blue.shade300),
                     onPressed: () {
                       context.read<EmployeeCubit>().getListEmployee(
-                          branch: branch, departement: departement);
+                          branch: branch, departement: department);
                     },
                     child: const Text(
                       "Cari",
@@ -173,6 +174,56 @@ class _ListEmployeeState extends State<ListEmployee> {
                         child: ListTile(
                           title: Text(state.data[index].employeeName),
                           subtitle: Text(state.data[index].employeeMail),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                  onPressed: () async {
+                                    await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => MultiBlocProvider(
+                                          providers: [
+                                            BlocProvider<DepartementCubit>(
+                                              create: (context) =>
+                                                  DepartementCubit(),
+                                            ),
+                                            BlocProvider<BranchCubit>(
+                                              create: (context) =>
+                                                  BranchCubit(),
+                                            ),
+                                            BlocProvider<EmployeeCubit>(
+                                              create: (context) =>
+                                                  EmployeeCubit(),
+                                            )
+                                          ],
+                                          child: EditEmployee(
+                                            employee: state.data[index],
+                                          ),
+                                        ),
+                                      ),
+                                    );
+
+                                    setState(() {
+                                      callEmployee();
+                                    });
+                                  },
+                                  icon: const Icon(Icons.edit)),
+                              IconButton(
+                                  onPressed: () async {
+                                    String message = await context
+                                        .read<EmployeeCubit>()
+                                        .deleteEmployee(
+                                            state.data[index].employeeId!);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(content: Text(message)));
+                                    setState(() {
+                                      callEmployee();
+                                    });
+                                  },
+                                  icon: const Icon(Icons.delete))
+                            ],
+                          ),
                           onTap: () => showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
@@ -232,7 +283,7 @@ class _ListEmployeeState extends State<ListEmployee> {
                 BlocProvider<EmployeeCubit>(
                   create: (context) => EmployeeCubit(),
                 )
-              ], child: const FormEmployee(title: "Tambah Employee")),
+              ], child: const AddEmployee()),
             ),
           );
 
