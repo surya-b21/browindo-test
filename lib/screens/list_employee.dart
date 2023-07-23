@@ -172,6 +172,8 @@ class _ListEmployeeState extends State<ListEmployee> {
                       itemCount: state.data.length,
                       itemBuilder: (context, index) => Card(
                         child: ListTile(
+                          leading: Text(state.data[index].employeeId.toString(),
+                              style: TextStyle(fontSize: 20)),
                           title: Text(state.data[index].employeeName),
                           subtitle: Text(state.data[index].employeeMail),
                           trailing: Row(
