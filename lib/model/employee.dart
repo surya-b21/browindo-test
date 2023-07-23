@@ -11,28 +11,28 @@ String employeeToJson(List<Employee> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Employee {
-  final int employeeId;
+  int? employeeId;
   final String employeeName;
   final String employeeAddress;
   final DateTime employeeDob;
   final String employeeMail;
   final int departmentId;
-  final int flagEmployee;
+  int? flagEmployee;
   final String branchId;
-  final String branchName;
-  final String departmentName;
+  String? branchName;
+  String? departmentName;
 
   Employee({
-    required this.employeeId,
+    this.employeeId,
     required this.employeeName,
     required this.employeeAddress,
     required this.employeeDob,
     required this.employeeMail,
     required this.departmentId,
-    required this.flagEmployee,
+    this.flagEmployee,
     required this.branchId,
-    required this.branchName,
-    required this.departmentName,
+    this.branchName,
+    this.departmentName,
   });
 
   factory Employee.fromJson(Map<String, dynamic> json) => Employee(

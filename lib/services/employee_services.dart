@@ -7,17 +7,16 @@ import 'package:test_flreelance/model/employee.dart';
 
 class EmployeeServices {
   final _http = DioHelper().initDio();
-  final _storage = FlutterSecureStorage();
+  final _storage = const FlutterSecureStorage();
 
-  Future<List<Employee>> getListEmployee(
-      String branch, String departement) async {
+  Future<List<Employee>> getListEmployee(String branch, int departement) async {
     String url = "/employee/list?";
-    if (branch.isNotEmpty) {
-      url = "${url}branch_id=${branch}&";
+    if (branch != "") {
+      url = "${url}branch_id=$branch&";
     }
 
-    if (departement.isNotEmpty) {
-      url = "${url}departement=${departement}";
+    if (departement != 0) {
+      url = "${url}departement=$departement";
     }
 
     String? token = await _storage.read(key: 'token');
